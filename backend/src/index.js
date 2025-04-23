@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import supabase from "./services/supabase.js";
 import { authRouter } from "./routers/authRouter.js";
-import { documentsRouter } from "./routers/documents.js";
+import { documentsRouter } from "./routers/documentsRouter.js";
 
 const app = express();
 
