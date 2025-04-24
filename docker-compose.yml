@@ -4,6 +4,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: dockerfile.dev
     ports:
       - "5000:5000"
     volumes:
@@ -16,6 +17,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      dockerfile: dockerfile.dev
     ports:
       - "3000:5173"
     volumes:
