@@ -10,14 +10,13 @@ services:
       - key: NODE_ENV
         value: production
       - key: SUPABASE_URL
-        sync: false
+        sync: true
       - key: SUPABASE_KEY
-        sync: false
+        sync: true
       - key: JWT_SECRET
-        sync: false
+        sync: true
       - key: BACKEND_PORT
-        sync: false
-
+        sync: true
 
   - type: web
     name: dms-frontend
@@ -28,4 +27,4 @@ services:
     plan: free
     envVars:
       - key: VITE_API_URL
-        sync: false
+        sync: true
