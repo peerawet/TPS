@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
+  console.log("API URL:", import.meta.env.VITE_API_URL);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -95,9 +96,9 @@ export default function LoginPage() {
               </button>
             </p>
           </div>
-          <small className="text-center mt-12 text-gray-500 ">
-            API URL {API_URL}
-          </small>
+          <div className="text-center mt-12 text-gray-500 text-sm">
+            API URL: {API_URL || "Not Set"}
+          </div>
         </div>
       </div>
     </div>
