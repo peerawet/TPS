@@ -1,64 +1,140 @@
-📄 TPS - Document Management System
-A mini document management system (DMS) where users can upload, view, tag, and manage documents securely.
+<h1>📄 TPS - Document Management System</h1>
 
-Live Demo: https://dms-frontend-q93o.onrender.com/
+<p>A mini document management system (DMS) where users can upload, view, tag, and manage documents securely.</p>
 
-🚀 Setup Instructions
+<p><strong>Live Demo:</strong> <a href="https://dms-frontend-q93o.onrender.com/" target="_blank">https://dms-frontend-q93o.onrender.com/</a></p>
 
-# 1. Clone the repository
-git clone https://github.com/peerawet/TPS.git
-cd TPS/
+<hr>
 
-# 2. Backend setup
-cd backend
-cp .env-example .env
-npm install
-cd ..
+<h2>🚀 Setup Instructions</h2>
 
-# 3. Frontend setup
-cd frontend
-cp .env-example .env
-npm ci --legacy-peer-dep
-cd ..
+<ol>
+  <li><strong>Clone the repository</strong><br>
+    <code>git clone https://github.com/peerawet/TPS.git</code><br>
+    <code>cd TPS/</code>
+  </li>
 
-# 4. Start the project
-docker-compose up --build
+  <li><strong>Backend setup</strong><br>
+    <code>cd backend</code><br>
+    <code>cp .env-example .env</code><br>
+    <code>npm install</code><br>
+    <code>cd ..</code>
+  </li>
 
-🌐 Access the Application
-Frontend → http://localhost:3000/
-Backend API → http://localhost:5000/
+  <li><strong>Frontend setup</strong><br>
+    <code>cd frontend</code><br>
+    <code>cp .env-example .env</code><br>
+    <code>npm ci --legacy-peer-dep</code><br>
+    <code>cd ..</code>
+  </li>
 
-🛠 Technologies Used
+  <li><strong>Start the project</strong><br>
+    <code>docker-compose up --build</code>
+  </li>
+</ol>
 
-Frontend	React.js, Tailwind CSS
-Backend	Node.js, Express.js
-Database	Supabase (PostgreSQL)
-Storage	Supabase Storage
-Authentication	JWT (JSON Web Tokens)
-Deployment	Docker, Docker Compose, Render.com
+<hr>
 
-📋 Assumptions and Limitations
+<h2>🌐 Access the Application</h2>
 
+<ul>
+  <li><strong>Frontend →</strong> <a href="http://localhost:3000/" target="_blank">http://localhost:3000/</a></li>
+  <li><strong>Backend API →</strong> <a href="http://localhost:5000/" target="_blank">http://localhost:5000/</a></li>
+</ul>
 
+<hr>
 
-⏳ Time Spent
+<h2>🛠 Technologies Used</h2>
 
-Task	Hours
-Project setup	8
-Backend API development	4
-Frontend development	4
-Testing & debugging	2
-Total	18 hours
+<table>
+  <tr>
+    <td><strong>Frontend</strong></td>
+    <td>React.js, Tailwind CSS</td>
+  </tr>
+  <tr>
+    <td><strong>Backend</strong></td>
+    <td>Node.js, Express.js</td>
+  </tr>
+  <tr>
+    <td><strong>Database</strong></td>
+    <td>Supabase (PostgreSQL)</td>
+  </tr>
+  <tr>
+    <td><strong>Storage</strong></td>
+    <td>Supabase Storage</td>
+  </tr>
+  <tr>
+    <td><strong>Authentication</strong></td>
+    <td>JWT (JSON Web Tokens)</td>
+  </tr>
+  <tr>
+    <td><strong>Deployment</strong></td>
+    <td>Docker, Docker Compose, Render.com</td>
+  </tr>
+</table>
 
-🔑 Sample Login Credentials
+<hr>
 
-https://dms-frontend-q93o.onrender.com/
+<h2>📋 Assumptions and Limitations</h2>
 
-Email	peerawet1996@gmail.com
-Password 12345678
+<ul>
+  <li>✅ Only authenticated users can upload, edit, download, and delete documents.</li>
+  <li>✅ Allowed file types: .pdf, .docx, .txt</li>
+  <li>✅ Maximum upload file size: 10MB.</li>
+  <li>✅ Each document is tied to the uploading user only.</li>
+  <li>🚫 No OCR / full-text search inside file contents (metadata only).</li>
+</ul>
 
-🌎 Bonus: Deployment
-Deployed App: https://dms-frontend-q93o.onrender.com/
+<hr>
 
-✨ Enjoy
-Created with ❤️ by [Peerawet]
+<h2>⏳ Time Spent</h2>
+
+<table>
+  <tr>
+    <td>Task</td>
+    <td>Hours</td>
+  </tr>
+  <tr>
+    <td>Project setup</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>Backend API development</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>Frontend development</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>Testing &amp; debugging</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td><strong>Total</strong></td>
+    <td><strong>18 hours</strong></td>
+  </tr>
+</table>
+
+<hr>
+
+<h2>🔑 Sample Login Credentials</h2>
+
+<p><strong>Deployed App:</strong> <a href="https://dms-frontend-q93o.onrender.com/" target="_blank">https://dms-frontend-q93o.onrender.com/</a></p>
+
+<ul>
+  <li><strong>Email:</strong> peerawet1996@gmail.com</li>
+  <li><strong>Password:</strong> 12345678</li>
+</ul>
+
+<hr>
+
+<h2>🌎 Bonus: Deployment</h2>
+
+<p><strong>Deployed App:</strong> <a href="https://dms-frontend-q93o.onrender.com/" target="_blank">https://dms-frontend-q93o.onrender.com/</a></p>
+
+<hr>
+
+<h2>✨ Enjoy</h2>
+
+<p>Created with ❤️ by <strong>Peerawet</strong></p>
