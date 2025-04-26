@@ -75,8 +75,6 @@
 
 <hr>
 
-<h2>📋 Assumptions and Limitations</h2>
-
 <h2>📋 ข้อสมมติและข้อจำกัด (Assumptions and Limitations)</h2>
 
 <ul>
