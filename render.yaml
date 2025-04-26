@@ -7,7 +7,14 @@ services:
     rootDir: backend
     plan: free
     envVars:
-      - group: TPS-Backend-Env
+      - key: SUPABASE_URL
+        value: https://lxyqtapnnytsigmrikoq.supabase.co
+      - key: SUPABASE_KEY
+        value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4eXF0YXBubnl0c2lnbXJpa29xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU0MTU1NjMsImV4cCI6MjA2MDk5MTU2M30.q4BbIx5Uv_ZIjHYIaABpYPOf33gqLadtHKAxsvZqQ3Y
+      - key: JWT_SECRET
+        value: mlO3uWLagciqI7W/QK9sIp8YwQR4wfIIJKPlve4WG9V5x0z0+z2ickFFB5rGgZRjRtwLbXNWusFVYYliNZDiHA==
+      - key: BACKEND_PORT
+        value: 5000
 
   - type: web
     name: dms-frontend
@@ -17,4 +24,5 @@ services:
     rootDir: frontend
     plan: free
     envVars:
-      - group: TPS-Frontend-Env
+      - key: VITE_API_URL
+        value: https://dms-backend-iusx.onrender.com
