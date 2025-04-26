@@ -2,6 +2,7 @@ import { Router } from "express";
 import supabase from "../services/supabase.js";
 import { protect } from "../middlewares/protect.js";
 import multer from "multer";
+import path from "path";
 
 const upload = multer({ storage: multer.memoryStorage() });
 export const documentsRouter = Router();
@@ -9,40 +10,38 @@ export const documentsRouter = Router();
 documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
-    let tags = req.body.tags || []; // รับ tags มาเป็น array
+    let tags = req.body.tags || [];
 
     console.log("Received tags:", tags);
 
+    // จัดการ tags ให้เป็น array
     if (typeof tags === "string") {
       try {
-        // พยายาม parse เป็น JSON array
         tags = JSON.parse(tags);
-
-        // ถ้า parse แล้วไม่ใช่ array ให้ตั้งเป็น empty array
         if (!Array.isArray(tags)) {
           tags = [];
         }
       } catch (e) {
-        // ถ้า parse ไม่ได้จริงๆ (กรณี format แปลกๆ) ก็ fallback ไป split comma
         tags = tags
-          .replace(/^\[|\]$/g, "") // ลบ [ ] รอบๆ ออกก่อน
+          .replace(/^\[|\]$/g, "") // ลบ [] ออก
           .split(",")
           .map((tag) => tag.trim())
           .filter((tag) => tag.length);
       }
     }
 
+    // เช็กว่ามีไฟล์ส่งมาหรือไม่
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // ตรวจสอบขนาดไฟล์ ไม่เกิน 10MB
+    // 1. เช็กขนาดไฟล์ ไม่เกิน 10MB
     const maxSize = 10 * 1024 * 1024;
     if (file.size > maxSize) {
       return res.status(400).json({ message: "File size exceeds 10MB limit" });
     }
 
-    // ตรวจสอบชนิดไฟล์
+    // 2. เช็ก mimetype ว่าตรงตามที่กำหนด
     const allowedMimeTypes = [
       "application/pdf",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -52,8 +51,20 @@ documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
       return res.status(400).json({ message: "Unsupported file type" });
     }
 
-    const userId = req.userId;
-    const filename = `${Date.now()}_${file.originalname}`;
+    // 3. เช็กนามสกุลไฟล์
+    const fileExtension = path.extname(file.originalname).toLowerCase();
+    const allowedExtensions = [".pdf", ".docx", ".txt"];
+    if (!allowedExtensions.includes(fileExtension)) {
+      return res.status(400).json({ message: "Unsupported file extension" });
+    }
+
+    // 4. ทำความสะอาดชื่อไฟล์
+    const safeFilename = path
+      .basename(file.originalname)
+      .replace(/[^a-z0-9_\-\.]/gi, "_");
+
+    const userId = req.userId; // ✅ ประกาศ userId ก่อนใช้
+    const filename = `${Date.now()}_${safeFilename}`;
     const filePath = `${userId}/${filename}`;
 
     // อัปโหลดไฟล์ขึ้น Supabase Storage
@@ -63,6 +74,7 @@ documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
         contentType: file.mimetype,
         upsert: false,
       });
+
     if (uploadError) {
       console.error("Upload error:", uploadError.message);
       return res.status(500).json({ message: "File upload failed" });
@@ -72,13 +84,14 @@ documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
     const { data: signedUrlData, error: signedUrlError } =
       await supabase.storage
         .from("documents")
-        .createSignedUrl(uploadData.path, 60 * 60);
+        .createSignedUrl(uploadData.path, 60 * 60); // 1 ชั่วโมง
+
     if (signedUrlError) {
       console.error("Signed URL error:", signedUrlError.message);
       return res.status(500).json({ message: "Failed to create signed URL" });
     }
 
-    // บันทึก metadata ลงในตาราง documents
+    // บันทึกข้อมูล metadata ลง Database
     const { data: dbData, error: dbError } = await supabase
       .from("documents")
       .insert([
@@ -100,6 +113,7 @@ documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
         .json({ message: "Failed to save document metadata" });
     }
 
+    // สำเร็จ
     return res.status(200).json({
       message: "File uploaded successfully",
       document: dbData,

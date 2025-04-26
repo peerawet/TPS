@@ -4,10 +4,13 @@ import Navbar from "../layouts/Navbar.jsx";
 import DataTable from "react-data-table-component";
 import UploadDocumentModal from "../components/UploadDocumentModal.jsx";
 import DeleteDocumentModal from "../components/DeleteDocumentModal.jsx";
-import EditDocumentModal from "../components/EditDocumentModal.jsx"; // <-- New
+import EditDocumentModal from "../components/EditDocumentModal.jsx";
 
 function DocumentsPage() {
   const [files, setFiles] = useState([]);
+  const [filteredFiles, setFilteredFiles] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]); // <-- เปลี่ยนจาก selectedTag เดิมเป็น array
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -21,7 +24,14 @@ function DocumentsPage() {
     setLoading(true);
     try {
       const response = await axios.get(`${API_URL}/documents`);
-      setFiles(response.data.files || []);
+      const fetchedFiles = response.data.files || [];
+      setFiles(fetchedFiles);
+      setFilteredFiles(fetchedFiles);
+
+      const allTags = [
+        ...new Set(fetchedFiles.flatMap((file) => file.tags || [])),
+      ];
+      setTags(allTags);
     } catch (error) {
       console.error("Error fetching documents:", error.message);
     } finally {
@@ -44,7 +54,11 @@ function DocumentsPage() {
         `${API_URL}/documents/delete/${selectedFile.id}`
       );
       if (response.status === 200) {
-        setFiles(files.filter((file) => file.id !== selectedFile.id));
+        const updatedFiles = files.filter(
+          (file) => file.id !== selectedFile.id
+        );
+        setFiles(updatedFiles);
+        setFilteredFiles(updatedFiles);
         setIsDeleteModalOpen(false);
       }
     } catch (error) {
@@ -52,10 +66,30 @@ function DocumentsPage() {
     }
   };
 
-  // ฟังก์ชันเรียกเวลาอยากแก้ไข
   const handleEditClick = (file) => {
     setFileToEdit(file);
     setIsEditModalOpen(true);
+  };
+
+  const handleTagClick = (tag) => {
+    let updatedTags = [];
+    if (selectedTags.includes(tag)) {
+      // ถ้ากด tag เดิม = เอาออก
+      updatedTags = selectedTags.filter((t) => t !== tag);
+    } else {
+      // กด tag ใหม่ = เพิ่มเข้าไป
+      updatedTags = [...selectedTags, tag];
+    }
+    setSelectedTags(updatedTags);
+
+    if (updatedTags.length === 0) {
+      setFilteredFiles(files);
+    } else {
+      const filtered = files.filter(
+        (file) => updatedTags.every((t) => file.tags?.includes(t)) // <-- ต้องมีทุก tag ที่เลือก
+      );
+      setFilteredFiles(filtered);
+    }
   };
 
   const columns = [
@@ -79,7 +113,7 @@ function DocumentsPage() {
           ))}
         </div>
       ),
-      sortable: true,
+      sortable: false,
     },
     {
       name: "Created At",
@@ -131,15 +165,44 @@ function DocumentsPage() {
             </button>
           </div>
 
+          {/* Tag Filter Buttons */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag, index) => (
+              <button
+                key={index}
+                onClick={() => handleTagClick(tag)}
+                className={`px-3 py-1 rounded-full text-xs ${
+                  selectedTags.includes(tag)
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-200 text-blue-800"
+                }`}
+              >
+                {tag}
+              </button>
+            ))}
+            {selectedTags.length > 0 && (
+              <button
+                onClick={() => {
+                  setSelectedTags([]);
+                  setFilteredFiles(files);
+                }}
+                className="px-3 py-1 rounded-full bg-red-300 text-red-800 text-xs"
+              >
+                Clear Filter
+              </button>
+            )}
+          </div>
+
           {loading ? (
-            <div className="text-center w-full">Loading...</div>
+            <div className="text-center w-full text-gray-600">Loading...</div>
           ) : (
             <DataTable
               columns={columns}
-              data={files}
+              data={filteredFiles}
               pagination
               highlightOnHover
               responsive
+              noDataComponent="No documents found"
             />
           )}
         </div>
