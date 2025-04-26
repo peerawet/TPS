@@ -18,7 +18,7 @@ app.use("/documents", documentsRouter);
 // Route ทดสอบการเชื่อมต่อ Supabase
 app.get("/", (req, res) => {
   if (supabase) {
-    return res.send("✅ Supabase is connected");
+    return res.send(process.env.SUPABASE_URL);
   }
   res.status(500).send("❌ Supabase not initialized");
 });
