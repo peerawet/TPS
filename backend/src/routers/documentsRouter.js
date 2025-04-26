@@ -9,7 +9,28 @@ export const documentsRouter = Router();
 documentsRouter.post("/", protect, upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
-    const tags = req.body.tags || []; // รับ tags มาเป็น array
+    let tags = req.body.tags || []; // รับ tags มาเป็น array
+
+    console.log("Received tags:", tags);
+
+    if (typeof tags === "string") {
+      try {
+        // พยายาม parse เป็น JSON array
+        tags = JSON.parse(tags);
+
+        // ถ้า parse แล้วไม่ใช่ array ให้ตั้งเป็น empty array
+        if (!Array.isArray(tags)) {
+          tags = [];
+        }
+      } catch (e) {
+        // ถ้า parse ไม่ได้จริงๆ (กรณี format แปลกๆ) ก็ fallback ไป split comma
+        tags = tags
+          .replace(/^\[|\]$/g, "") // ลบ [ ] รอบๆ ออกก่อน
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag.length);
+      }
+    }
 
     if (!file) {
       return res.status(400).json({ message: "No file uploaded" });

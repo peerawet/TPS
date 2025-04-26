@@ -3,9 +3,10 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import DocumentsPage from "./pages/DocumentsPage";
+import jwtInterceptor from "./utills/jwtInterceptor";
 
 function App() {
-  const [count, setCount] = useState(0);
+  jwtInterceptor();
 
   return (
     <Routes>
