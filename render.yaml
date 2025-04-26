@@ -10,13 +10,13 @@ services:
       - key: NODE_ENV
         value: production
       - key: SUPABASE_URL
-        sync: true # ใช้ sync: true เพื่อให้เชื่อมโยงค่าจาก Render UI
+        sync: false
       - key: SUPABASE_KEY
-        sync: true # ใช้ sync: true
+        sync: false
       - key: JWT_SECRET
-        sync: true # ใช้ sync: true
+        sync: false
       - key: BACKEND_PORT
-        sync: true # ใช้ sync: true
+        sync: false
 
 
   - type: web
@@ -28,4 +28,4 @@ services:
     plan: free
     envVars:
       - key: VITE_API_URL
-        sync: true # ใช้ sync: true เพื่อให้ได้ค่าในตัวแปรจาก Render UI
+        sync: false
