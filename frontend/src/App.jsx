@@ -12,6 +12,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/documents" element={<DocumentsPage />} />
+      <Route path="/" element={<Navigate to="/login" />} />
     </Routes>
   );
 }
