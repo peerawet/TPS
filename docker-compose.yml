@@ -10,7 +10,7 @@ services:
     volumes:
       - ./backend:/usr/src/app
     env_file:
-      - ./.env
+      - ./backend/.env
     working_dir: /usr/src/app
     command: npm run dev
 
@@ -22,5 +22,7 @@ services:
       - "3000:5173"
     volumes:
       - ./frontend:/usr/src/app
+    env_file:
+      - ./frontend/.env
     working_dir: /usr/src/app
     command: npm run dev

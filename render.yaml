@@ -10,13 +10,14 @@ services:
       - key: NODE_ENV
         value: production
       - key: SUPABASE_URL
-        sync: false
+        sync: true # ใช้ sync: true เพื่อให้เชื่อมโยงค่าจาก Render UI
       - key: SUPABASE_KEY
-        sync: false
+        sync: true # ใช้ sync: true
       - key: JWT_SECRET
-        sync: false
+        sync: true # ใช้ sync: true
       - key: BACKEND_PORT
-        sync: false
+        sync: true # ใช้ sync: true
+
 
   - type: web
     name: dms-frontend
@@ -25,3 +26,6 @@ services:
     branch: main
     rootDir: frontend
     plan: free
+    envVars:
+      - key: VITE_API_URL
+        sync: true # ใช้ sync: true เพื่อให้ได้ค่าในตัวแปรจาก Render UI
