@@ -7,16 +7,7 @@ services:
     rootDir: backend
     plan: free
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: SUPABASE_URL
-        sync: true
-      - key: SUPABASE_KEY
-        sync: true
-      - key: JWT_SECRET
-        sync: true
-      - key: BACKEND_PORT
-        sync: true
+      - group: TPS-Backend-Env
 
   - type: web
     name: dms-frontend
@@ -26,5 +17,4 @@ services:
     rootDir: frontend
     plan: free
     envVars:
-      - key: VITE_API_URL
-        value: https://dms-backend-iusx.onrender.com
+      - group: TPS-Frontend-Env
