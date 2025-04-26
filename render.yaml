@@ -27,4 +27,4 @@ services:
     plan: free
     envVars:
       - key: VITE_API_URL
-        sync: true
+        value: https://dms-backend-iusx.onrender.com
