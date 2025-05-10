@@ -9,6 +9,7 @@ services:
       - "5000:5000"
     volumes:
       - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
     env_file:
       - ./backend/.env
     working_dir: /usr/src/app
@@ -24,5 +25,6 @@ services:
       - ./frontend:/usr/src/app
     env_file:
       - ./frontend/.env
+      - /usr/src/app/node_modules
     working_dir: /usr/src/app
     command: npm run dev
